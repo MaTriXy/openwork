@@ -249,7 +249,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     set((state) => ({
       isLoading: true,
       error: null,
-      currentTask: state.currentTask
+          currentTask: state.currentTask
         ? {
             ...state.currentTask,
             status: 'running',
@@ -536,7 +536,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       currentTask: null,
       isLoading: false,
       error: null,
-      permissionRequest: null,
+          permissionRequest: null,
       setupProgress: null,
       setupProgressTaskId: null,
       setupDownloadStep: 1,
@@ -592,7 +592,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       ),
       isLoading: true,
       error: null,
-    }));
+        }));
 
     try {
       // Pass the existing taskId to reuse the same task entry

@@ -1226,18 +1226,36 @@ export class OpenCodeAdapter extends EventEmitter<OpenCodeAdapterEvents> {
           code: 'MODEL_NO_TOOLS',
         };
       }
+      if (error.includes('requires more credits') || error.includes('can only afford')) {
+        return {
+          message: error,
+          code: 'INSUFFICIENT_CREDITS',
+        };
+      }
       return { message: error };
     }
 
     // Handle API error objects from OpenCode CLI
     if (typeof error === 'object' && error !== null) {
-      const apiError = error as { name?: string; data?: { message?: string } };
+      const apiError = error as {
+        name?: string;
+        data?: { message?: string; statusCode?: number };
+      };
       const errorMessage = apiError.data?.message || apiError.name || 'Unknown error';
+      const statusCode = apiError.data?.statusCode;
 
       if (errorMessage.includes('does not support tools')) {
         return {
           message: `The selected model does not support tool use. Please switch to a model that supports function calling (e.g., llama3.2, qwen2.5, mistral).`,
           code: 'MODEL_NO_TOOLS',
+        };
+      }
+
+      // 402 Payment Required - insufficient credits
+      if (statusCode === 402 || errorMessage.includes('requires more credits') || errorMessage.includes('can only afford')) {
+        return {
+          message: `Insufficient credits for this request. Please add credits to your account or try a different model.`,
+          code: 'INSUFFICIENT_CREDITS',
         };
       }
 

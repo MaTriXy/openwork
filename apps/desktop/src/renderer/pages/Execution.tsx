@@ -1134,6 +1134,25 @@ export default function ExecutionPage() {
                 </Button>
               </div>
             </>
+          ) : currentTask.result?.errorCode === 'INSUFFICIENT_CREDITS' ? (
+            <>
+              <div className="flex items-center justify-center gap-2 text-amber-500 mb-2">
+                <AlertTriangle className="h-5 w-5" />
+                <span className="font-medium">Insufficient Credits</span>
+              </div>
+              <p className="text-sm text-muted-foreground mb-3">
+                You don't have enough credits for this request. Add credits to your provider account or try a different model.
+              </p>
+              <div className="flex gap-2 justify-center">
+                <Button variant="outline" onClick={() => openSettings()}>
+                  Change Model
+                </Button>
+                <Button onClick={() => retryTask()}>
+                  <Play className="h-4 w-4 mr-1" />
+                  Retry Task
+                </Button>
+              </div>
+            </>
           ) : (
             <>
               <p className="text-sm text-muted-foreground mb-3">
